@@ -217,7 +217,11 @@ export default class QueryEditor extends React.Component {
         plugins: [prettierPluginGraphql]
       });
 
+      const scrollInfo = this.editor.getScrollInfo();
+      const cursor = this.editor.getCursor();
       this.editor.setValue(prettyQuery);
+      this.editor.scrollTo(scrollInfo.left, scrollInfo.top);
+      this.editor.setCursor(cursor);
       toast.success('Query prettified');
     } catch (e) {
       toast.error('Error occurred while prettifying GraphQL query');

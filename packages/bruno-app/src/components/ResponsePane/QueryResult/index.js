@@ -170,6 +170,21 @@ const QueryResult = ({
   const queryFilterEnabled = useMemo(() => codeMirrorMode.includes('json') && selectedFormat === 'json' && selectedTab === 'editor', [codeMirrorMode, selectedFormat, selectedTab]);
   const hasScriptError = item.preRequestScriptErrorMessage || item.postResponseScriptErrorMessage;
 
+  const graphqlErrors = useMemo(() => {
+    try {
+      const jsonStr = formattedData || data;
+      if (jsonStr) {
+        const parsed = JSON.parse(jsonStr);
+        if (parsed?.errors && Array.isArray(parsed.errors) && parsed.errors.length > 0) {
+          return parsed.errors;
+        }
+      }
+    } catch (e) {
+      // ignore parse errors
+    }
+    return null;
+  }, [formattedData, data]);
+
   return (
     <StyledWrapper
       className="w-full h-full relative flex"
@@ -196,6 +211,21 @@ const QueryResult = ({
         />
       ) : (
         <div className="h-full flex flex-col">
+          {graphqlErrors && (
+            <div
+              className="graphql-errors-banner"
+              style={{
+                padding: '6px 10px',
+                backgroundColor: 'var(--color-danger-bg, rgba(220, 38, 38, 0.1))',
+                borderLeft: '3px solid var(--color-text-danger, #dc2626)',
+                color: 'var(--color-text-danger, #dc2626)',
+                fontSize: '13px',
+                flexShrink: 0
+              }}
+            >
+              GraphQL Error: {graphqlErrors.map((e) => e.message).join('; ')}
+            </div>
+          )}
           <div className="flex-1 relative">
             <div className="absolute top-0 left-0 h-full w-full" data-testid="response-preview-container">
               <QueryResultPreview

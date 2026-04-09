@@ -6,7 +6,7 @@ import { addTab, focusTab } from './tabs';
 const initialState = {
   isDragging: false,
   idbConnectionReady: false,
-  leftSidebarWidth: 250,
+  leftSidebarWidth: parseInt(localStorage.getItem('bruno.leftSidebarWidth'), 10) || 250,
   sidebarCollapsed: false,
   screenWidth: 500,
   showHomePage: false,
@@ -82,6 +82,7 @@ export const appSlice = createSlice({
     },
     updateLeftSidebarWidth: (state, action) => {
       state.leftSidebarWidth = action.payload.leftSidebarWidth;
+      localStorage.setItem('bruno.leftSidebarWidth', action.payload.leftSidebarWidth);
     },
     updateIsDragging: (state, action) => {
       state.isDragging = action.payload.isDragging;

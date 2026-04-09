@@ -49,7 +49,7 @@ const Wrapper = styled.div`
 
     li {
       display: inline-flex;
-      max-width: 180px;
+      max-width: 500px;
       min-width: 80px;
       list-style: none;
       cursor: pointer;
@@ -64,9 +64,7 @@ const Wrapper = styled.div`
       margin-bottom: 3px;
 
       .tab-container {
-        width: 100%;
         position: relative;
-        overflow: hidden;
       }
 
       &:not(.active) {

@@ -21,7 +21,6 @@ const StyledWrapper = styled.div`
 
   .tab-name {
     position: relative;
-    overflow: hidden;
     white-space: nowrap;
     font-size: 0.8125rem;
 

@@ -49,7 +49,7 @@ const Wrapper = styled.div`
 
     li {
       display: inline-flex;
-      max-width: 500px;
+      max-width: ${(props) => (props.$fullTabNames ? '500px' : '180px')};
       min-width: 80px;
       list-style: none;
       cursor: pointer;
@@ -65,6 +65,7 @@ const Wrapper = styled.div`
 
       .tab-container {
         position: relative;
+        ${(props) => (props.$fullTabNames ? '' : 'overflow: hidden; width: 100%;')}
       }
 
       &:not(.active) {

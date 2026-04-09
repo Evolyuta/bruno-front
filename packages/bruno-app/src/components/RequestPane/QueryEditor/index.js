@@ -13,6 +13,7 @@ import prettierPluginGraphql from 'prettier/parser-graphql';
 import { getAllVariables } from 'utils/collections';
 import { defineCodeMirrorBrunoVariablesMode } from 'utils/common/codemirror';
 import toast from 'react-hot-toast';
+import { store as reduxStore } from 'providers/ReduxStore';
 import StyledWrapper from './StyledWrapper';
 import { IconWand } from '@tabler/icons';
 
@@ -217,11 +218,17 @@ export default class QueryEditor extends React.Component {
         plugins: [prettierPluginGraphql]
       });
 
-      const scrollInfo = this.editor.getScrollInfo();
-      const cursor = this.editor.getCursor();
-      this.editor.setValue(prettyQuery);
-      this.editor.scrollTo(scrollInfo.left, scrollInfo.top);
-      this.editor.setCursor(cursor);
+      const keepScroll = reduxStore.getState()?.app?.preferences?.customFeatures?.prettifyKeepScroll !== false;
+
+      if (keepScroll) {
+        const scrollInfo = this.editor.getScrollInfo();
+        const cursor = this.editor.getCursor();
+        this.editor.setValue(prettyQuery);
+        this.editor.scrollTo(scrollInfo.left, scrollInfo.top);
+        this.editor.setCursor(cursor);
+      } else {
+        this.editor.setValue(prettyQuery);
+      }
       toast.success('Query prettified');
     } catch (e) {
       toast.error('Error occurred while prettifying GraphQL query');

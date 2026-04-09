@@ -67,7 +67,8 @@ const defaultPreferences = {
     sslSession: {
       enabled: false
     }
-  }
+  },
+  customFeatures: {}
 };
 
 const preferencesSchema = Yup.object().shape({

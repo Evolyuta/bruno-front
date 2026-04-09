@@ -12,9 +12,11 @@ import StyledWrapper from './StyledWrapper';
 import DraggableTab from './DraggableTab';
 import CreateTransientRequest from 'components/CreateTransientRequest';
 import ActionIcon from 'ui/ActionIcon/index';
+import { useCustomFeature, CUSTOM_FEATURES } from 'utils/custom-features';
 
 const RequestTabs = () => {
   const dispatch = useDispatch();
+  const fullTabNames = useCustomFeature(CUSTOM_FEATURES.FULL_TAB_NAMES);
   const tabsRef = useRef();
   const scrollContainerRef = useRef();
   const collectionTabsRef = useRef();
@@ -109,7 +111,7 @@ const RequestTabs = () => {
 
   // Todo: Must support ephemeral requests
   return (
-    <StyledWrapper>
+    <StyledWrapper $fullTabNames={fullTabNames}>
       {newRequestModalOpen && (
         <NewRequest collectionUid={activeCollection?.uid} onClose={() => setNewRequestModalOpen(false)} />
       )}

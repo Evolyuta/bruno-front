@@ -3,6 +3,7 @@ import { useTheme } from 'providers/Theme/index';
 import React, { useMemo, useState } from 'react';
 import { formatResponse, getContentType } from 'utils/common';
 import { getDefaultResponseFormat, detectContentTypeFromBase64 } from 'utils/response';
+import { useCustomFeature, CUSTOM_FEATURES } from 'utils/custom-features';
 import LargeResponseWarning from '../LargeResponseWarning';
 import QueryResultFilter from './QueryResultFilter';
 import QueryResultPreview from './QueryResultPreview';
@@ -169,8 +170,10 @@ const QueryResult = ({
 
   const queryFilterEnabled = useMemo(() => codeMirrorMode.includes('json') && selectedFormat === 'json' && selectedTab === 'editor', [codeMirrorMode, selectedFormat, selectedTab]);
   const hasScriptError = item.preRequestScriptErrorMessage || item.postResponseScriptErrorMessage;
+  const errorBannerEnabled = useCustomFeature(CUSTOM_FEATURES.GRAPHQL_ERROR_BANNER);
 
   const graphqlErrors = useMemo(() => {
+    if (!errorBannerEnabled) return null;
     try {
       const jsonStr = formattedData || data;
       if (jsonStr) {

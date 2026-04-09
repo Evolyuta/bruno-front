@@ -4,6 +4,7 @@ import { restoreTabs } from 'providers/ReduxStore/slices/tabs';
 import { mountCollection } from 'providers/ReduxStore/slices/collections/actions';
 import { toggleCollection } from 'providers/ReduxStore/slices/collections';
 import { findItemInCollection, findItemInCollectionByPathname } from 'utils/collections';
+import { useCustomFeature, CUSTOM_FEATURES } from 'utils/custom-features';
 
 const useTabPersistence = () => {
   const dispatch = useDispatch();
@@ -11,6 +12,7 @@ const useTabPersistence = () => {
   const tabs = useSelector((state) => state.tabs.tabs);
   const activeTabUid = useSelector((state) => state.tabs.activeTabUid);
   const restoredRef = useRef(false);
+  const restoreTabsEnabled = useCustomFeature(CUSTOM_FEATURES.RESTORE_TABS);
 
   const getCollections = () => store.getState().collections.collections;
 
@@ -25,7 +27,7 @@ const useTabPersistence = () => {
         const savedState = await ipcRenderer.invoke('renderer:get-saved-tabs');
         if (!savedState?.tabs?.length) return;
 
-        // Wait for collections to appear in Redux
+        // Wait for collections to appear in Redux (also ensures preferences are loaded)
         await new Promise((resolve) => {
           const check = () => {
             const collections = getCollections();
@@ -37,6 +39,10 @@ const useTabPersistence = () => {
           };
           check();
         });
+
+        // Check preference after preferences are loaded
+        const prefs = store.getState().app.preferences;
+        if (prefs?.customFeatures?.restoreTabs === false) return;
 
         // Mount unmounted collections that contain saved tabs
         const collections = getCollections();

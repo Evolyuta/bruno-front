@@ -1,10 +1,12 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useRef, forwardRef } from 'react';
 import { useDispatch } from 'react-redux';
 import useGraphqlSchema from './useGraphqlSchema';
 import { IconBook, IconDownload, IconLoader2, IconRefresh, IconPaperclip, IconX } from '@tabler/icons';
 import get from 'lodash/get';
 import { findEnvironmentInCollection } from 'utils/collections';
 import { updateRequestGraphqlVariables } from 'providers/ReduxStore/slices/collections';
+import { useCustomFeature, CUSTOM_FEATURES } from 'utils/custom-features';
+import Dropdown from '../../Dropdown';
 import toast from 'react-hot-toast';
 
 const getAttachedFiles = (item) => {
@@ -35,6 +37,9 @@ const getAttachedFiles = (item) => {
 
 const GraphQLSchemaActions = ({ item, collection, onSchemaLoad, toggleDocs }) => {
   const dispatch = useDispatch();
+  const schemaOneClick = useCustomFeature(CUSTOM_FEATURES.SCHEMA_ONE_CLICK);
+  const fileUploadEnabled = useCustomFeature(CUSTOM_FEATURES.GRAPHQL_FILE_UPLOAD);
+
   const url = item.draft ? get(item, 'draft.request.url', '') : get(item, 'request.url', '');
   const pathname = item.draft ? get(item, 'draft.pathname', '') : get(item, 'pathname', '');
   const uid = item.draft ? get(item, 'draft.uid', '') : get(item, 'uid', '');
@@ -43,6 +48,7 @@ const GraphQLSchemaActions = ({ item, collection, onSchemaLoad, toggleDocs }) =>
 
   let {
     schema,
+    schemaSource,
     loadSchema,
     isLoading: isSchemaLoading
   } = useGraphqlSchema(url, environment, request, collection);
@@ -52,6 +58,21 @@ const GraphQLSchemaActions = ({ item, collection, onSchemaLoad, toggleDocs }) =>
       onSchemaLoad(schema);
     }
   }, [schema]);
+
+  // Original dropdown refs (used when schemaOneClick is disabled)
+  const schemaDropdownTippyRef = useRef();
+  const onSchemaDropdownCreate = (ref) => (schemaDropdownTippyRef.current = ref);
+
+  const MenuIcon = forwardRef((props, ref) => {
+    return (
+      <div ref={ref} className="dropdown-icon cursor-pointer flex hover:underline ml-2">
+        {isSchemaLoading && <IconLoader2 className="animate-spin" size={18} strokeWidth={1.5} />}
+        {!isSchemaLoading && schema && <IconRefresh size={18} strokeWidth={1.5} />}
+        {!isSchemaLoading && !schema && <IconDownload size={18} strokeWidth={1.5} />}
+        <span className="ml-1">Schema</span>
+      </div>
+    );
+  });
 
   const attachedFiles = useMemo(() => getAttachedFiles(item), [
     item.draft ? get(item, 'draft.request.body.graphql.variables') : get(item, 'request.body.graphql.variables')
@@ -134,31 +155,60 @@ const GraphQLSchemaActions = ({ item, collection, onSchemaLoad, toggleDocs }) =>
         <IconBook size={18} strokeWidth={1.5} />
         <span className="ml-1">Docs</span>
       </div>
-      <div
-        className="cursor-pointer flex hover:underline ml-2"
-        onClick={() => !isSchemaLoading && loadSchema('introspection')}
-      >
-        {isSchemaLoading && <IconLoader2 className="animate-spin" size={18} strokeWidth={1.5} />}
-        {!isSchemaLoading && schema && <IconRefresh size={18} strokeWidth={1.5} />}
-        {!isSchemaLoading && !schema && <IconDownload size={18} strokeWidth={1.5} />}
-        <span className="ml-1">Schema</span>
-      </div>
-      <div
-        className="cursor-pointer flex hover:underline ml-2"
-        onClick={onAttachFiles}
-        title="Attach files for GraphQL Upload"
-      >
-        <IconPaperclip size={18} strokeWidth={1.5} />
-        <span className="ml-1">Files{attachedFiles.length > 0 ? ` (${attachedFiles.length})` : ''}</span>
-      </div>
-      {attachedFiles.length > 0 && (
+
+      {schemaOneClick ? (
         <div
-          className="cursor-pointer flex items-center ml-1 opacity-60 hover:opacity-100"
-          onClick={onClearFiles}
-          title="Remove all files"
+          className="cursor-pointer flex hover:underline ml-2"
+          onClick={() => !isSchemaLoading && loadSchema('introspection')}
         >
-          <IconX size={14} strokeWidth={1.5} />
+          {isSchemaLoading && <IconLoader2 className="animate-spin" size={18} strokeWidth={1.5} />}
+          {!isSchemaLoading && schema && <IconRefresh size={18} strokeWidth={1.5} />}
+          {!isSchemaLoading && !schema && <IconDownload size={18} strokeWidth={1.5} />}
+          <span className="ml-1">Schema</span>
         </div>
+      ) : (
+        <Dropdown onCreate={onSchemaDropdownCreate} icon={<MenuIcon />} placement="bottom-start">
+          <div
+            className="dropdown-item"
+            onClick={() => {
+              schemaDropdownTippyRef.current.hide();
+              loadSchema('introspection');
+            }}
+          >
+            {schema && schemaSource === 'introspection' ? 'Refresh from Introspection' : 'Load from Introspection'}
+          </div>
+          <div
+            className="dropdown-item"
+            onClick={() => {
+              schemaDropdownTippyRef.current.hide();
+              loadSchema('file');
+            }}
+          >
+            Load from File
+          </div>
+        </Dropdown>
+      )}
+
+      {fileUploadEnabled && (
+        <>
+          <div
+            className="cursor-pointer flex hover:underline ml-2"
+            onClick={onAttachFiles}
+            title="Attach files for GraphQL Upload"
+          >
+            <IconPaperclip size={18} strokeWidth={1.5} />
+            <span className="ml-1">Files{attachedFiles.length > 0 ? ` (${attachedFiles.length})` : ''}</span>
+          </div>
+          {attachedFiles.length > 0 && (
+            <div
+              className="cursor-pointer flex items-center ml-1 opacity-60 hover:opacity-100"
+              onClick={onClearFiles}
+              title="Remove all files"
+            >
+              <IconX size={14} strokeWidth={1.5} />
+            </div>
+          )}
+        </>
       )}
     </div>
   );

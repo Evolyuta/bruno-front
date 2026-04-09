@@ -6,7 +6,7 @@ import { addTab, focusTab } from './tabs';
 const initialState = {
   isDragging: false,
   idbConnectionReady: false,
-  leftSidebarWidth: parseInt(localStorage.getItem('bruno.leftSidebarWidth'), 10) || 250,
+  leftSidebarWidth: 250,
   sidebarCollapsed: false,
   screenWidth: 500,
   showHomePage: false,
@@ -48,7 +48,8 @@ const initialState = {
       sslSession: {
         enabled: false
       }
-    }
+    },
+    customFeatures: {}
   },
   generateCode: {
     mainLanguage: 'Shell',
@@ -82,7 +83,9 @@ export const appSlice = createSlice({
     },
     updateLeftSidebarWidth: (state, action) => {
       state.leftSidebarWidth = action.payload.leftSidebarWidth;
-      localStorage.setItem('bruno.leftSidebarWidth', action.payload.leftSidebarWidth);
+      if (state.preferences?.customFeatures?.persistSidebarWidth !== false) {
+        localStorage.setItem('bruno.leftSidebarWidth', action.payload.leftSidebarWidth);
+      }
     },
     updateIsDragging: (state, action) => {
       state.isDragging = action.payload.isDragging;
@@ -112,6 +115,13 @@ export const appSlice = createSlice({
     },
     updatePreferences: (state, action) => {
       state.preferences = action.payload;
+      // Restore sidebar width from localStorage if feature is enabled
+      if (action.payload?.customFeatures?.persistSidebarWidth !== false) {
+        const savedWidth = parseInt(localStorage.getItem('bruno.leftSidebarWidth'), 10);
+        if (savedWidth) {
+          state.leftSidebarWidth = savedWidth;
+        }
+      }
     },
     updateActivePreferencesTab: (state, action) => {
       state.activePreferencesTab = action.payload.tab;

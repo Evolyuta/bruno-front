@@ -10,7 +10,8 @@ import {
   IconKeyboard,
   IconZoomQuestion,
   IconSquareLetterB,
-  IconDatabase
+  IconDatabase,
+  IconPuzzle
 } from '@tabler/icons';
 
 import Support from './Support';
@@ -20,6 +21,7 @@ import Proxy from './ProxySettings';
 import Display from './Display';
 import Keybindings from './Keybindings';
 import Beta from './Beta';
+import Extensions from './Extensions';
 
 import StyledWrapper from './StyledWrapper';
 import Cache from './Cache/index';
@@ -62,6 +64,10 @@ const Preferences = () => {
 
       case 'beta': {
         return <Beta />;
+      }
+
+      case 'extensions': {
+        return <Extensions />;
       }
 
       case 'support': {
@@ -109,6 +115,10 @@ const Preferences = () => {
           <div className={getTabClassname('beta')} role="tab" onClick={() => setTab('beta')}>
             <IconSquareLetterB size={16} strokeWidth={1.5} />
             Beta
+          </div>
+          <div className={getTabClassname('extensions')} role="tab" onClick={() => setTab('extensions')}>
+            <IconPuzzle size={16} strokeWidth={1.5} />
+            Extensions
           </div>
         </div>
         <section

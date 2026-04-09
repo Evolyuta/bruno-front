@@ -24,6 +24,7 @@ const { uuid, safeStringifyJSON, safeParseJSON, parseDataFromResponse, parseData
 const { chooseFileToSave, writeFile, getCollectionFormat, hasRequestExtension } = require('../../utils/filesystem');
 const { addCookieToJar, getDomainsWithCookies, getCookieStringForUrl } = require('../../utils/cookies');
 const { createFormData } = require('../../utils/form-data');
+const { hasFileUploads, buildGraphqlMultipartFormData } = require('../../utils/graphql-multipart');
 const { findItemInCollectionByPathname, sortFolder, getAllRequestsInFolderRecursively, getEnvVars, getTreePathFromCollectionToItem, mergeVars, sortByNameThenSequence } = require('../../utils/collection');
 const { getOAuth2TokenUsingAuthorizationCode, getOAuth2TokenUsingClientCredentials, getOAuth2TokenUsingPasswordCredentials, getOAuth2TokenUsingImplicitGrant, updateCollectionOauth2Credentials, clearOauth2CredentialsByCredentialsId } = require('../../utils/oauth2');
 const { preferencesUtil } = require('../../store/preferences');
@@ -580,6 +581,13 @@ const registerNetworkIpc = (mainWindow) => {
       } catch (err) {
         throw new Error(`Failed to parse GraphQL variables: ${err.message}`);
       }
+    }
+
+    // GraphQL file upload: convert to multipart/form-data per graphql-multipart-request-spec
+    if (request.mode === 'graphql' && request.data?.variables && hasFileUploads(request.data.variables)) {
+      const form = buildGraphqlMultipartFormData(request.data.query, request.data.variables, collectionPath);
+      request.data = form;
+      extend(request.headers, form.getHeaders());
     }
 
     // stringify the request url encoded params

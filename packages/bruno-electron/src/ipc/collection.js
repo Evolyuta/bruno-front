@@ -1626,6 +1626,18 @@ const registerRendererEventHandlers = (mainWindow, watcher) => {
     }
   });
 
+  ipcMain.handle('renderer:open-file-dialog', async (event, options) => {
+    try {
+      const { canceled, filePaths } = await dialog.showOpenDialog(mainWindow, {
+        properties: options?.properties || ['openFile']
+      });
+      if (canceled) return [];
+      return filePaths;
+    } catch (error) {
+      return [];
+    }
+  });
+
   ipcMain.handle('renderer:fetch-oauth2-credentials', async (event, { itemUid, request, collection }) => {
     try {
       if (request.oauth2) {

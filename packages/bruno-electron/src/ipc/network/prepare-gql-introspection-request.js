@@ -32,14 +32,14 @@ const mapHeaders = (requestHeaders, collectionHeaders, resolvedVars) => {
   // Add collection headers first
   each(collectionHeaders, (h) => {
     if (h.enabled) {
-      headers[h.name] = interpolate(h.value, resolvedVars);
+      headers[interpolate(h.name, resolvedVars)] = interpolate(h.value, resolvedVars);
     }
   });
 
   // Then add request headers, which will overwrite if names overlap
   each(requestHeaders, (h) => {
     if (h.enabled) {
-      headers[h.name] = interpolate(h.value, resolvedVars);
+      headers[interpolate(h.name, resolvedVars)] = interpolate(h.value, resolvedVars);
     }
   });
 

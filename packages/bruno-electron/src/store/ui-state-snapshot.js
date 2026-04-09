@@ -45,11 +45,22 @@ class UiStateSnapshotStore {
     this.setCollectionByPathname({ collection });
   }
 
+  getTabs() {
+    return this.store.get('tabs') || { tabs: [], activeTabUid: null };
+  }
+
+  saveTabs({ tabs, activeTabUid }) {
+    this.store.set('tabs', { tabs, activeTabUid });
+  }
+
   update({ type, data }) {
     switch (type) {
       case 'COLLECTION_ENVIRONMENT':
         const { collectionPath, environmentName } = data;
         this.updateCollectionEnvironment({ collectionPath, environmentName });
+        break;
+      case 'TABS':
+        this.saveTabs(data);
         break;
       default:
         break;

@@ -1618,6 +1618,14 @@ const registerRendererEventHandlers = (mainWindow, watcher) => {
     }
   });
 
+  ipcMain.handle('renderer:get-saved-tabs', () => {
+    try {
+      return uiStateSnapshotStore.getTabs();
+    } catch (error) {
+      return { tabs: [], activeTabUid: null };
+    }
+  });
+
   ipcMain.handle('renderer:fetch-oauth2-credentials', async (event, { itemUid, request, collection }) => {
     try {
       if (request.oauth2) {

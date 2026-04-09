@@ -234,6 +234,13 @@ export const tabsSlice = createSlice({
         console.error('Tab not found!');
       }
     },
+    restoreTabs: (state, action) => {
+      const { tabs, activeTabUid } = action.payload;
+      if (tabs && tabs.length > 0) {
+        state.tabs = tabs;
+        state.activeTabUid = activeTabUid || tabs[tabs.length - 1].uid;
+      }
+    },
     reorderTabs: (state, action) => {
       const { direction, sourceUid, targetUid } = action.payload;
       const tabs = state.tabs;
@@ -279,6 +286,7 @@ export const {
   closeTabs,
   closeAllCollectionTabs,
   makeTabPermanent,
+  restoreTabs,
   reorderTabs
 } = tabsSlice.actions;
 

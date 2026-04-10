@@ -1,182 +1,125 @@
-<br />
-<img src="assets/images/logo-transparent.png" width="80"/>
+# Bruno Extended
 
-### Bruno - Opensource IDE for exploring and testing APIs.
+Fork of [Bruno](https://github.com/usebruno/bruno) — open-source API client with custom extensions for better GraphQL workflow.
 
-[![GitHub version](https://badge.fury.io/gh/usebruno%2Fbruno.svg)](https://badge.fury.io/gh/usebruno%2Fbruno)
-[![CI](https://github.com/usebruno/bruno/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/usebruno/bruno/actions/workflows/tests.yml)
-[![Commit Activity](https://img.shields.io/github/commit-activity/m/usebruno/bruno)](https://github.com/usebruno/bruno/pulse)
-[![X](https://img.shields.io/twitter/follow/use_bruno?style=social&logo=x)](https://twitter.com/use_bruno)
-[![Website](https://img.shields.io/badge/Website-Visit-blue)](https://www.usebruno.com)
-[![Download](https://img.shields.io/badge/Download-Latest-brightgreen)](https://www.usebruno.com/downloads)
-
-**English**
-| [Українська](docs/readme/readme_ua.md)
-| [Русский](docs/readme/readme_ru.md)
-| [Türkçe](docs/readme/readme_tr.md)
-| [Deutsch](docs/readme/readme_de.md)
-| [Français](docs/readme/readme_fr.md)
-| [Português (BR)](docs/readme/readme_pt_br.md)
-| [한국어](docs/readme/readme_kr.md)
-| [বাংলা](docs/readme/readme_bn.md)
-| [Español](docs/readme/readme_es.md)
-| [Italiano](docs/readme/readme_it.md)
-| [Română](docs/readme/readme_ro.md)
-| [Polski](docs/readme/readme_pl.md)
-| [简体中文](docs/readme/readme_cn.md)
-| [正體中文](docs/readme/readme_zhtw.md)
-| [العربية](docs/readme/readme_ar.md)
-| [日本語](docs/readme/readme_ja.md)
-| [ქართული](docs/readme/readme_ka.md)
-| [Nederlands](docs/readme/readme_nl.md)
-| [فارسی](docs/readme/readme_fa.md)
-
-Bruno is a new and innovative API client, aimed at revolutionizing the status quo represented by Postman and similar tools out there.
-
-Bruno stores your collections directly in a folder on your filesystem. We use a plain text markup language, Bru, to save information about API requests.
-
-You can use Git or any version control of your choice to collaborate over your API collections.
-
-Bruno is offline-only. There are no plans to add cloud-sync to Bruno, ever. We value your data privacy and believe it should stay on your device. Read our long-term vision [here](https://github.com/usebruno/bruno/discussions/269)
-
-[Download Bruno](https://www.usebruno.com/downloads)
-
-📢 Watch our recent talk at India FOSS 3.0 Conference [here](https://www.youtube.com/watch?v=7bSMFpbcPiY)
-
-![bruno](assets/images/landing-2-dark.png#gh-light-mode-only)
-![bruno](assets/images/landing-2-light.png#gh-dark-mode-only) <br /><br />
-
-## Commercial Versions ✨
-
-Majority of our features are free and open source.
-We strive to strike a harmonious balance between [open-source principles and sustainability](https://github.com/usebruno/bruno/discussions/269)
-
-You can explore our [paid versions](https://www.usebruno.com/pricing) to see if there are additional features that you or your team may find useful! <br/>
-
-## Table of Contents
-
-- [Installation](#installation)
-- [Features](#features)
-  - [Run across multiple platforms 🖥️](#run-across-multiple-platforms-%EF%B8%8F)
-  - [Collaborate via Git 👩‍💻🧑‍💻](#collaborate-via-git-%E2%80%8D%E2%80%8D)
-- [Important Links 📌](#important-links-)
-- [Showcase 🎥](#showcase-)
-- [Share Testimonials 📣](#share-testimonials-)
-- [Publishing to New Package Managers](#publishing-to-new-package-managers)
-- [Stay in touch 🌐](#stay-in-touch-)
-- [Trademark](#trademark)
-- [Contribute 👩‍💻🧑‍💻](#contribute-%E2%80%8D%E2%80%8D)
-- [Authors](#authors)
-- [License 📄](#license-)
+All custom features are **enabled by default** and can be individually disabled in **Preferences > Extensions**, fully reverting to original Bruno behavior.
 
 ## Installation
 
-Bruno is available as binary download [on our website](https://www.usebruno.com/downloads) for Mac, Windows and Linux.
+### Linux
 
-You can also install Bruno via package managers like Homebrew, Chocolatey, Scoop, Snap, Flatpak and Apt.
+```bash
+# Clone
+git clone git@github.com:Evolyuta/bruno-front.git
+cd bruno-front
 
-```sh
-# On Mac via Homebrew
-brew install bruno
+# Install nvm and Node 22
+nvm install 22.12.0
+nvm use
 
-# On Windows via Chocolatey
-choco install bruno
-
-# On Windows via Scoop
-scoop bucket add extras
-scoop install bruno
-
-# On Windows via winget
-winget install Bruno.Bruno
-
-# On Linux via Snap
-snap install bruno
-
-# On Linux via Flatpak
-flatpak install com.usebruno.Bruno
-
-# On Arch Linux via AUR
-yay -S bruno
-
-# On Linux via Apt
-sudo mkdir -p /etc/apt/keyrings
-sudo apt update && sudo apt install gpg curl
-curl -fsSL "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x9FA6017ECABE0266" \
-  | gpg --dearmor \
-  | sudo tee /etc/apt/keyrings/bruno.gpg > /dev/null
-sudo chmod 644 /etc/apt/keyrings/bruno.gpg
-echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/bruno.gpg] http://debian.usebruno.com/ bruno stable" \
-  | sudo tee /etc/apt/sources.list.d/bruno.list
-sudo apt update && sudo apt install bruno
+# Install dependencies and build
+npm i --legacy-peer-deps
+npm run setup
 ```
 
-## Features
+### Windows
 
-### Run across multiple platforms 🖥️
+```bash
+git clone git@github.com:Evolyuta/bruno-front.git
+cd bruno-front
 
-![bruno](assets/images/run-anywhere.png) <br /><br />
+nvm install 22.12.0
+nvm use
 
-### Collaborate via Git 👩‍💻🧑‍💻
+npm i --legacy-peer-deps
+npm run setup
+```
 
-Or any version control system of your choice
+### macOS
 
-![bruno](assets/images/version-control.png) <br /><br />
+```bash
+git clone git@github.com:Evolyuta/bruno-front.git
+cd bruno-front
 
-## Important Links 📌
+nvm install 22.12.0
+nvm use
 
-- [Our Long Term Vision](https://github.com/usebruno/bruno/discussions/269)
-- [Roadmap](https://www.usebruno.com/roadmap)
-- [Documentation](https://docs.usebruno.com)
-- [Stack Overflow](https://stackoverflow.com/questions/tagged/bruno)
-- [Website](https://www.usebruno.com)
-- [Pricing](https://www.usebruno.com/pricing)
-- [Download](https://www.usebruno.com/downloads)
+npm i --legacy-peer-deps
+npm run setup
+```
 
-## Showcase 🎥
+### Running in dev mode
 
-- [Testimonials](https://github.com/usebruno/bruno/discussions/343)
-- [Knowledge Hub](https://github.com/usebruno/bruno/discussions/386)
-- [Scriptmania](https://github.com/usebruno/bruno/discussions/385)
+```bash
+# Linux/macOS — use the start script (handles VS Code env variables)
+./start-dev.sh
 
-## Share Testimonials 📣
+# Or manually (required if running from VS Code terminal)
+unset ELECTRON_RUN_AS_NODE
+unset ELECTRON_NO_ATTACH_CONSOLE
+unset HTTP_PROXY
+unset HTTPS_PROXY
+npm run dev
+```
 
-If Bruno has helped you at work and your teams, please don't forget to share your [testimonials on our GitHub discussion](https://github.com/usebruno/bruno/discussions/343)
+## Custom Extensions
 
-## Publishing to New Package Managers
+All extensions can be toggled in **Preferences > Extensions**.
 
-Please see [here](publishing.md) for more information.
+### Schema One-Click
+Click the Schema button to instantly run introspection without a dropdown menu.
+When disabled: original dropdown with "Load from Introspection" / "Load from File" options.
 
-## Stay in touch 🌐
+### Header Name Interpolation
+Environment variables (e.g. `{{appTokenKey}}`) are interpolated in header **names** for introspection requests, not just values.
+When disabled: only header values are interpolated (original behavior).
 
-[𝕏 (Twitter)](https://twitter.com/use_bruno) <br />
-[Website](https://www.usebruno.com) <br />
-[Discord](https://discord.com/invite/KgcZUncpjq) <br />
-[LinkedIn](https://www.linkedin.com/company/usebruno)
+### Restore Tabs on Startup
+Previously opened request tabs are restored when the app starts, including sidebar state.
+When disabled: app starts with empty workspace overview (original behavior).
 
-## Trademark
+### Preserve Search Case
+Search input keeps the original case as typed instead of forcing lowercase.
+When disabled: search text is converted to lowercase (original behavior).
 
-**Name**
+### Prettify Keeps Scroll Position
+Scroll position and cursor are preserved after prettifying a GraphQL query.
+When disabled: editor scrolls to top after prettify (original behavior).
 
-`Bruno` is a trademark held by [Anoop M D](https://www.helloanoop.com/)
+### GraphQL Error Banner
+A red banner with the error message is shown above the response when GraphQL returns errors.
+When disabled: no banner, errors only visible in JSON response (original behavior).
 
-**Logo**
+### Persist Sidebar Width
+Sidebar width is saved between sessions.
+When disabled: sidebar resets to 250px default on restart (original behavior).
 
-The logo is sourced from [OpenMoji](https://openmoji.org/library/emoji-1F436/). License: CC [BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)
+### Full Tab Names
+Tab names are shown in full without truncation. Close button is a regular element, not an overlay.
+When disabled: tabs limited to 180px with fade effect (original behavior).
 
-## Contribute 👩‍💻🧑‍💻
+### GraphQL File Upload
+Support for file uploads via [graphql-multipart-request-spec](https://github.com/jaydenseric/graphql-multipart-request-spec).
+Use the **Files** button next to Schema to attach files. In variables, files are referenced as `@file:/path/to/file`.
 
-I am happy that you are looking to improve bruno. Please check out the [contributing guide](contributing.md)
+Single file:
+```json
+{
+  "file": "@file:/home/user/photo.png"
+}
+```
 
-Even if you are not able to make contributions via code, please don't hesitate to file bugs and feature requests that needs to be implemented to solve your use case.
+Multiple files:
+```json
+{
+  "files": ["@file:/home/user/file1.png", "@file:/home/user/file2.png"]
+}
+```
 
-## Authors
+When disabled: Files button is hidden, file upload not available (original behavior).
 
-<div align="center">
-    <a href="https://github.com/usebruno/bruno/graphs/contributors">
-        <img src="https://contrib.rocks/image?repo=usebruno/bruno" />
-    </a>
-</div>
-
-## License 📄
+## License
 
 [MIT](license.md)
+
+Based on [Bruno](https://github.com/usebruno/bruno) by Anoop M D and contributors.

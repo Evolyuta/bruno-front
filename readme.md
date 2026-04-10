@@ -4,7 +4,14 @@
 
 Все кастомные фичи **включены по умолчанию** и могут быть индивидуально отключены в **Preferences > Extensions**, полностью возвращая оригинальное поведение Bruno.
 
-## Установка
+## Скачивание
+
+Готовые сборки доступны на странице [Releases](https://github.com/Evolyuta/bruno-front/releases):
+
+- **Linux**: `.AppImage` — сделать исполняемым и запустить
+- **Windows**: `.zip` — распаковать и запустить `Bruno.exe`
+
+## Сборка из исходников
 
 ```bash
 git clone git@github.com:Evolyuta/bruno-front.git

@@ -8,7 +8,7 @@
 
 Готовые сборки доступны на странице [Releases](https://github.com/Evolyuta/bruno-front/releases):
 
-- **Linux**: `.AppImage` — сделать исполняемым и запустить
+- **Linux**: `.AppImage` — сделать исполняемым и запустить (`chmod +x`, может потребоваться `sudo apt install libfuse2` и запуск с `--no-sandbox`)
 - **Windows**: `.zip` — распаковать и запустить `Bruno.exe`
 
 ## Сборка из исходников
